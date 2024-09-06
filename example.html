@@ -41,6 +41,7 @@
             margin-bottom: 20px;
             transition: border-color 0.3s ease;
         }
+
         input[type="text"]:focus {
             border-color: #007bff;
             outline: none;
@@ -63,7 +64,7 @@
             margin-top: 20px;
             font-size: 18px;
             font-weight: bold;
-            display: none;
+            display: none;  /* Hide result initially */
         }
         .valid {
             color: green;
@@ -77,18 +78,27 @@
 
     <div class="container">
         <h1>Zimbabwe National ID Validator</h1>
-        <input type="text" id="idInput" placeholder="Enter your Zimbabwe ID">
+        <input type="text" id="idInput" placeholder="Enter your ID (e.g. 12-3456789H23)">
         <button onclick="checkID()">Validate</button>
         <p id="result" class="result"></p>
     </div>
 
+    <!-- Implementation -->
     <script src="zim-id-validator.js"></script>
-    <script>
-        function checkID() {
-            const inputID = document.getElementById('idInput').value;
-            const result = validateID(inputID);  // Call the validation function
 
+    <script>
+        // Function to check the validity of the entered ID
+        function checkID() {
+            // Get the value from the input field
+            const inputID = document.getElementById('idInput').value;
+
+            // Call the validation function
+            const result = validateID(inputID);  
+
+            // Get the result element to display the result
             const resultElement = document.getElementById('result');
+
+            // Set the result text and apply the appropriate class
             resultElement.textContent = result.message;
             resultElement.className = `result ${result.valid ? 'valid' : 'invalid'}`;
             resultElement.style.display = 'block';  // Show the result element
