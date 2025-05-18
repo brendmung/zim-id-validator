@@ -105,6 +105,4 @@ validateZimbabweanID('12-3456789H23', true, true)
 ```
 
 For more examples (cURL, PHP, Python, Java), visit the [live documentation](https://zim-ids.vercel.app).
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyourusername%2Fzim-id-validator)
 ---
