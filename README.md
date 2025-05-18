@@ -1,49 +1,193 @@
-# Zimbabwe National ID Validator
+# Zimbabwe National ID Validator API
 
-A simple JavaScript library to validate Zimbabwe national IDs (e.g., format `12-3456789H23`). This library helps you easily validate Zimbabwean IDs based on specific rules.
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Deployment Status](https://img.shields.io/badge/deployment-active-success)](https://zim-ids.vercel.app)
 
-## Features
+A simple and elegant way to validate Zimbabwean National Identification Numbers. This API allows you to validate the format and structure of Zimbabwean National ID numbers and optionally retrieve associated province and district information.
 
-- Validate Zimbabwean national IDs based on number length and check letter.
-- Easy to integrate into any website.
-- Provides validation results with clear messages.
+## 🌟 Features
 
-## Usage
+- ✅ Validate Zimbabwean National ID number formats
+- 🗺️ Get province information for valid IDs
+- 📍 Get district information for valid IDs
+- 🚀 Simple, RESTful API
+- 📱 Responsive demo interface
 
-### 1. Download the JavaScript File
+## 🚀 Live Demo
 
-Clone this repo or download `zim-id-validator.js` and include it in your HTML file:
+Visit the live demo at: [https://zim-ids.vercel.app](https://zim-ids.vercel.app)
 
-```html
-<script src="zim-id-validator.js"></script>
+## 📋 API Documentation
+
+### Base URL
+
+```
+https://zim-ids.vercel.app
 ```
 
-### 2. Call the Validation Function
+### Endpoints
 
-In your HTML, create an input field and a button to trigger the validation:
+#### Validate Zimbabwean ID
 
-```html
-<input type="text" id="idInput" placeholder="Enter your Zimbabwe ID">
-<button onclick="checkID()">Validate</button>
-<p id="result"></p>
+```
+GET /api/validate
 ```
 
-Then call the `validateID()` function:
+Validates a Zimbabwean National ID number and optionally returns province and district information.
 
-```javascript
-function checkID() {
-    let inputID = document.getElementById('idInput').value;
-    let result = validateID(inputID);  // Call the validation function
-    let resultElement = document.getElementById('result');
-    resultElement.textContent = result.message;
-    resultElement.className = result.valid ? 'valid' : 'invalid';
+**Query Parameters:**
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| id | Yes | The Zimbabwean ID number to validate |
+| includeProvince | No | Set to 'true' to include province information in the response |
+| includeDistrict | No | Set to 'true' to include district information in the response |
+
+**Example Request:**
+
+```
+https://zim-ids.vercel.app/api/validate?id=12-3456789H23&includeProvince=true&includeDistrict=true
+```
+
+**Response Format:**
+
+```json
+{
+    "valid": boolean,
+    "message": string,
+    "province": string,  // Only included when includeProvince=true 
+    "district": string   // Only included when includeDistrict=true
 }
 ```
 
-## Example
+## 💻 Usage Examples
 
-For a full example, check out `example.html` in this repository.
+### JavaScript
 
-## License
+```javascript
+// Validate a Zimbabwean ID with fetch API
+async function validateZimbabweanID(idNumber, includeProvince = false, includeDistrict = false) {
+    try {
+        const baseUrl = 'https://zim-ids.vercel.app';
+        let url = `${baseUrl}/api/validate?id=${encodeURIComponent(idNumber)}`;
+        
+        // Add optional parameters if requested
+        if (includeProvince) {
+            url += '&includeProvince=true';
+        }
+        if (includeDistrict) {
+            url += '&includeDistrict=true';
+        }
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        return data;
+    } catch (error) {
+        console.error('Error validating ID:', error);
+        return { valid: false, message: 'API request failed' };
+    }
+}
 
-This project is licensed under the MIT License.
+// Example usage
+validateZimbabweanID('12-3456789H23', true, true)
+    .then(result => {
+        console.log(result);
+        // Handle the validation result
+        if (result.valid) {
+            console.log('Valid ID:', result.message);
+            if (result.province) console.log('Province:', result.province);
+            if (result.district) console.log('District:', result.district);
+        } else {
+            console.log('Invalid ID:', result.message);
+        }
+    });
+```
+
+### Python
+
+```python
+import requests
+
+def validate_zimbabwean_id(id_number, include_province=False, include_district=False):
+    """
+    Validate a Zimbabwean ID number using the API
+    
+    Args:
+        id_number (str): The Zimbabwean ID to validate
+        include_province (bool): Whether to include province information
+        include_district (bool): Whether to include district information
+        
+    Returns:
+        dict: The validation result
+    """
+    base_url = 'https://zim-ids.vercel.app'
+    params = {'id': id_number}
+    
+    # Add optional parameters if requested
+    if include_province:
+        params['includeProvince'] = 'true'
+    if include_district:
+        params['includeDistrict'] = 'true'
+    
+    try:
+        response = requests.get(f'{base_url}/api/validate', params=params)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error validating ID: {e}")
+        return {'valid': False, 'message': 'API request failed'}
+
+# Example usage
+if __name__ == "__main__":
+    result = validate_zimbabwean_id('12-3456789H23', include_province=True, include_district=True)
+    
+    if result['valid']:
+        print(f"Valid ID: {result['message']}")
+        if 'province' in result:
+            print(f"Province: {result['province']}")
+        if 'district' in result:
+            print(f"District: {result['district']}")
+    else:
+        print(f"Invalid ID: {result['message']}")
+```
+
+For more examples (cURL, PHP, Java), visit the [live documentation](https://zim-ids.vercel.app).
+
+## 🛠️ Development
+
+### Prerequisites
+
+- Node.js (v14 or later)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/zim-id-validator.git
+   cd zim-id-validator
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Run the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📦 Deployment
+
+This project is ready to be deployed on [Vercel](https://vercel.com) with zero configuration.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyourusername%2Fzim-id-validator)
+---
