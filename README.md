@@ -1,6 +1,5 @@
 # Zimbabwe National ID Validator API
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Deployment Status](https://img.shields.io/badge/deployment-active-success)](https://zim-ids.vercel.app)
 
 A simple and elegant way to validate Zimbabwean National Identification Numbers. This API allows you to validate the format and structure of Zimbabwean National ID numbers and optionally retrieve associated province and district information.
